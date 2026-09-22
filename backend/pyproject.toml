@@ -2,7 +2,6 @@
 name = "survey-platform-backend"
 version = "0.1.0"
 description = "万级智能体模拟问卷平台 —— 后端（FastAPI + PostgreSQL + 异步 worker）"
-readme = "../README.md"
 # 项目整体以 GPL-3.0-or-later 开源，完整许可文本见仓库根目录 LICENSE。
 license = "GPL-3.0-or-later"
 # 裁决 A2/C1：锁定 Python 3.12 补丁版 3.12.13（见 backend/.python-version）。
