@@ -1,0 +1,84 @@
+{
+  "scenario": "permanent",
+  "size": 10000,
+  "run_id": "a847c1ad-363c-4004-997b-da5a811f2da7",
+  "final_status": "completed_with_errors",
+  "duration_s": 127.1626,
+  "rate_per_s": 78.6395,
+  "peak_in_flight_mock": 37,
+  "peak_in_flight_db": 73,
+  "db_sample_count": 772,
+  "counts": {
+    "failed": 1000,
+    "succeeded": 9000
+  },
+  "valid": 9000,
+  "failed": 1000,
+  "cancelled": 0,
+  "retry_distribution": {
+    "1": 9000,
+    "3": 1000
+  },
+  "failed_error_codes": {
+    "INVALID_OUTPUT": 1000
+  },
+  "attempts_total": 12000,
+  "actual_cost": "0.480000",
+  "reserved_cost": "0.000000",
+  "unknown_cost_count": 0,
+  "rss_peak_mb": 180.8,
+  "peak_connections": 56,
+  "peak_active_connections": 56,
+  "peak_lock_waiters": 47,
+  "max_connections": 100,
+  "db_size": "58 MB",
+  "db_size_bytes": 60783639,
+  "r2_faults": {
+    "实际调用总数": 12000,
+    "期望调用总数": 12000,
+    "调用总数匹配": true,
+    "故障/成功序列不符的 persona 数(应为 0)": 0,
+    "examples_mismatch": [],
+    "mock_status_counts": {
+      "ok": 9000,
+      "invalid": 3000
+    },
+    "mock_error_counts": {
+      "INVALID_OUTPUT": 3000
+    }
+  },
+  "r2_no_default_fill_mock": {
+    "非 ok 调用携带档位值的条数(应为 0)": 0,
+    "ok 调用携带错误码的条数(应为 0)": 0,
+    "examples_non_ok_with_value": [],
+    "examples_ok_with_error": []
+  },
+  "r2_no_default_fill_db": {
+    "succeeded 值不等于任何 ok 调用的条数(应为 0)": 0,
+    "succeeded 但无任何 ok 调用的条数(应为 0)": 0,
+    "examples_mismatched": [],
+    "examples_succeeded_without_ok": []
+  },
+  "invariant_checks": {
+    "N_in_N_out(成员数==规模)": true,
+    "row_no↔persona_id 双射": true,
+    "成功成员 answer_json 非 NULL": true,
+    "成功成员 answer_json 全为合法五档": true,
+    "成功成员 question_id 固定": true,
+    "五档计数之和 == valid": true,
+    "成功成员答案互不重复": true,
+    "无重复 (member_id, attempt_no)": true,
+    "每个成功成员恰一条成功 attempt": true,
+    "failed 成员不带答案": true,
+    "至多一个活动批次": true,
+    "在途峰值 ≤ 100(mock)": true,
+    "在途峰值 ≤ 100(DB)": true
+  },
+  "scenario_checks": {
+    "final_status ∈ {completed_with_errors, failed}": true,
+    "预设失败数准确": true,
+    "有效数 == size - 失败数": true,
+    "失败成员有明确 last_error_code": true
+  },
+  "passed": true
+}

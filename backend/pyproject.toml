@@ -1,0 +1,52 @@
+[project]
+name = "survey-platform-backend"
+version = "0.1.0"
+description = "万级智能体模拟问卷平台 —— 后端（FastAPI + PostgreSQL + 异步 worker）"
+readme = "../README.md"
+# 项目整体以 GPL-3.0-or-later 开源，完整许可文本见仓库根目录 LICENSE。
+license = "GPL-3.0-or-later"
+# 裁决 A2/C1：锁定 Python 3.12 补丁版 3.12.13（见 backend/.python-version）。
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "pydantic>=2.9.0",
+    "sqlalchemy[asyncio]>=2.0.30",
+    "asyncpg>=0.30.0",
+    "alembic>=1.13.0",
+    "httpx>=0.27.0",
+    "openpyxl>=3.1.0",
+    "python-multipart>=0.0.9",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "ruff>=0.6.0",
+    "mypy>=1.11.0",
+]
+
+# 非打包项目：应用以源码目录直接运行（uv sync 只装依赖，不构建 wheel）。
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"]
+ignore = ["B008"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_unused_ignores = true
+disallow_untyped_defs = false
+ignore_missing_imports = true

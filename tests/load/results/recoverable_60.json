@@ -1,0 +1,79 @@
+{
+  "scenario": "recoverable",
+  "size": 60,
+  "run_id": "3d3d6d4b-f3fd-4499-b7b5-04184b3f0129",
+  "final_status": "completed",
+  "duration_s": 3.0202,
+  "rate_per_s": 19.8665,
+  "peak_in_flight_mock": 11,
+  "peak_in_flight_db": 58,
+  "db_sample_count": 20,
+  "counts": {
+    "succeeded": 60
+  },
+  "valid": 60,
+  "failed": 0,
+  "cancelled": 0,
+  "retry_distribution": {
+    "1": 52,
+    "3": 8
+  },
+  "failed_error_codes": {},
+  "attempts_total": 76,
+  "actual_cost": "0.002720",
+  "reserved_cost": "0.001674",
+  "unknown_cost_count": 1,
+  "rss_peak_mb": 133.8,
+  "r2_faults": {
+    "实际调用总数": 76,
+    "期望调用总数": 76,
+    "调用总数匹配": true,
+    "故障/成功序列不符的 persona 数(应为 0)": 0,
+    "examples_mismatch": [],
+    "mock_status_counts": {
+      "ok": 60,
+      "error": 8,
+      "invalid": 8
+    },
+    "mock_error_counts": {
+      "RATE_LIMITED": 7,
+      "SERVER_ERROR": 1,
+      "INVALID_OUTPUT": 8
+    }
+  },
+  "r2_no_default_fill_mock": {
+    "非 ok 调用携带档位值的条数(应为 0)": 0,
+    "ok 调用携带错误码的条数(应为 0)": 0,
+    "examples_non_ok_with_value": [],
+    "examples_ok_with_error": []
+  },
+  "r2_no_default_fill_db": {
+    "succeeded 值不等于任何 ok 调用的条数(应为 0)": 0,
+    "succeeded 但无任何 ok 调用的条数(应为 0)": 0,
+    "examples_mismatched": [],
+    "examples_succeeded_without_ok": []
+  },
+  "invariant_checks": {
+    "N_in_N_out(成员数==规模)": true,
+    "row_no↔persona_id 双射": true,
+    "成功成员 answer_json 非 NULL": true,
+    "成功成员 answer_json 全为合法五档": true,
+    "成功成员 question_id 固定": true,
+    "五档计数之和 == valid": true,
+    "成功成员答案互不重复": true,
+    "无重复 (member_id, attempt_no)": true,
+    "每个成功成员恰一条成功 attempt": true,
+    "failed 成员不带答案": true,
+    "至多一个活动批次": true,
+    "在途峰值 ≤ 100(mock)": true,
+    "在途峰值 ≤ 100(DB)": true
+  },
+  "scenario_checks": {
+    "final_status == completed": true,
+    "valid == size": true,
+    "failed == 0": true,
+    "尝试分布匹配(健康=1次,间歇故障=3次)": true,
+    "故障流为间歇(最大连续同类失败<5)": true
+  },
+  "passed": true
+}

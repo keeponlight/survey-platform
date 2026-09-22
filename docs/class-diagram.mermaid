@@ -1,0 +1,230 @@
+classDiagram
+    %% 万级智能体模拟问卷平台 · 类图（数据模型 + 服务类）
+    %% 命名照抄主文档 §6.1 / §5 / §8，snake_case
+
+    class Import {
+        +UUID id
+        +str file_hash
+        +str sheet_name
+        +dict column_mapping_json
+        +int row_count
+        +list snapshots_json
+        +datetime created_at
+    }
+
+    class Survey {
+        +UUID id
+        +str title
+        +dict product_json
+        +dict question_json
+        +int revision
+        +datetime created_at
+        +datetime updated_at
+    }
+
+    class Run {
+        +UUID id
+        +UUID survey_id
+        +dict survey_snapshot
+        +UUID import_id
+        +dict model_snapshot
+        +str prompt_version
+        +str source_version
+        +int sample_size
+        +str status
+        +str pause_reason
+        +Decimal budget_limit
+        +str budget_currency
+        +Decimal actual_cost
+        +Decimal reserved_cost
+        +int unknown_cost_count
+        +int request_limit
+        +int requests_reserved
+        +list control_events_json
+        +str idempotency_key
+        +str request_hash
+        +datetime created_at
+        +datetime started_at
+        +datetime finished_at
+    }
+
+    class RunMember {
+        +UUID id
+        +UUID run_id
+        +int row_no
+        +str persona_id
+        +dict persona_snapshot
+        +str status
+        +dict answer_json
+        +int attempt_count
+        +int attempt_limit
+        +datetime next_attempt_at
+        +UUID lease_token
+        +datetime lease_expires_at
+        +str last_error_code
+        +datetime updated_at
+    }
+
+    class Attempt {
+        +UUID id
+        +UUID member_id
+        +int attempt_no
+        +UUID lease_token
+        +datetime started_at
+        +datetime finished_at
+        +str status
+        +str provider_request_id
+        +str raw_output
+        +str error_code
+        +dict usage_json
+        +Decimal reserved_cost
+        +Decimal actual_cost
+        +int duration_ms
+    }
+
+    class PersonaSnapshot {
+        +int row_no
+        +str persona_id
+        +str profile_text
+        +int age
+        +str city_tier
+        +str source_version
+    }
+
+    class SurveyInput {
+        +str title
+        +Product product
+        +Question question
+    }
+    class Product {
+        +str name
+        +str description
+        +Decimal price
+        +str currency_unit
+        +str purchase_window
+        +str condition
+    }
+    class Question {
+        +str id
+        +str prompt
+        +str type
+        +list options
+        +int revision
+    }
+
+    class ModelRequest {
+        +list messages
+        +str provider
+        +str model
+        +dict output_schema
+        +int max_output_tokens
+        +float timeout_seconds
+        +float temperature
+        +int seed
+    }
+    class ModelResponse {
+        +str raw_text
+        +int input_tokens
+        +int output_tokens
+        +str provider_request_id
+        +str finish_reason
+        +int duration_ms
+        +str error_code
+    }
+    class ValidatedAnswer {
+        +str question_id
+        +str value
+        +str reason
+    }
+
+    class PersonaSource {
+        +import_table(file, sheet, column_mapping) Import
+        +load_snapshots(import_id) list~PersonaSnapshot~
+        -validate_rows()
+        -build_profile_text(row, mapping)
+    }
+    class SurveyService {
+        +create(SurveyInput) Survey
+        +get(id) Survey
+        +patch(id, expected_revision, SurveyInput) Survey
+        +list(page, size)
+        -validate_five_option_contract()
+    }
+    class RunService {
+        +preview(survey_id, revision, import_id, model_config_id)
+        +create(RunCreate, idempotency_key) Run
+        +start(run_id)
+        +pause(run_id)
+        +resume(run_id)
+        +cancel(run_id)
+        +retry_failed(run_id, idempotency_key)
+        +raise_budget(run_id, new_limit)
+        +allowed_actions(run) list~str~
+        -assert_no_active_run()
+    }
+    class RunRepository {
+        +claim_members(run_id, free_slots) list~RunMember~
+        +renew_lease(member_id, lease_token)
+        +scan_expired_leases(run_id)
+        +save_success(member_id, lease_token, answer, attempt) bool
+        +mark_retry_or_failed(...)
+        +settle_attempt(attempt_id, usage) 
+    }
+    class PromptBuilder {
+        +prompt_version str
+        +build_system() str
+        +build_user(persona_snapshot, product, question, output_schema) str
+    }
+    class ProviderAdapter {
+        +answer(ModelRequest) ModelResponse
+    }
+    class AnswerValidator {
+        +validate(raw_text, schema) ValidatedAnswer
+        -strip_single_fence()
+    }
+    class WorkerScheduler {
+        +run_loop()
+        +advisory_lock()
+        -acquire_slot()
+    }
+    class Limits
+    class Execute
+    class ReportService {
+        +summary(run_id) Summary
+        +results(run_id, page, size, status_filter)
+        -group_by_age_city()
+    }
+    class ExportService {
+        +export_csv(run_id) Stream
+    }
+    class MockProvider {
+        +answer(ModelRequest) ModelResponse
+        +fault_plan str
+        +call_log list
+    }
+
+    Import "1" --> "*" RunMember : import_id 快照来源
+    Survey "1" --> "*" Run : survey_id
+    Import "1" --> "*" Run : import_id
+    Run "1" --> "*" RunMember : run_id
+    RunMember "1" --> "*" Attempt : member_id
+    PersonaSnapshot ..> RunMember : 复制进 persona_snapshot
+    SurveyInput ..> Survey : 创建草稿
+    SurveyService ..> Survey
+    PersonaSource ..> PersonaSnapshot
+    RunService ..> Run
+    RunService ..> RunRepository
+    RunRepository ..> RunMember
+    RunRepository ..> Attempt
+    WorkerScheduler ..> RunRepository : claim / CAS
+    WorkerScheduler ..> Execute
+    Execute ..> PromptBuilder
+    Execute ..> ProviderAdapter
+    Execute ..> AnswerValidator
+    Execute ..> Limits
+    ProviderAdapter <|.. MockProvider : 同接口
+    ProviderAdapter ..> ModelRequest
+    ProviderAdapter ..> ModelResponse
+    AnswerValidator ..> ValidatedAnswer
+    ReportService ..> RunMember
+    ExportService ..> RunMember

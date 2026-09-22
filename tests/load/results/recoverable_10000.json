@@ -1,0 +1,85 @@
+{
+  "scenario": "recoverable",
+  "size": 10000,
+  "run_id": "31708791-1f49-43b3-9286-a5be6df4ddde",
+  "final_status": "completed",
+  "duration_s": 137.2303,
+  "rate_per_s": 72.8702,
+  "peak_in_flight_mock": 40,
+  "peak_in_flight_db": 76,
+  "db_sample_count": 841,
+  "counts": {
+    "succeeded": 10000
+  },
+  "valid": 10000,
+  "failed": 0,
+  "cancelled": 0,
+  "retry_distribution": {
+    "1": 8572,
+    "3": 1428
+  },
+  "failed_error_codes": {},
+  "attempts_total": 12856,
+  "actual_cost": "0.457120",
+  "reserved_cost": "1.179835",
+  "unknown_cost_count": 704,
+  "rss_peak_mb": 178.3,
+  "peak_connections": 56,
+  "peak_active_connections": 56,
+  "peak_lock_waiters": 47,
+  "max_connections": 100,
+  "db_size": "58 MB",
+  "db_size_bytes": 61201431,
+  "r2_faults": {
+    "实际调用总数": 12856,
+    "期望调用总数": 12856,
+    "调用总数匹配": true,
+    "故障/成功序列不符的 persona 数(应为 0)": 0,
+    "examples_mismatch": [],
+    "mock_status_counts": {
+      "ok": 10000,
+      "error": 1428,
+      "invalid": 1428
+    },
+    "mock_error_counts": {
+      "RATE_LIMITED": 724,
+      "SERVER_ERROR": 704,
+      "INVALID_OUTPUT": 1428
+    }
+  },
+  "r2_no_default_fill_mock": {
+    "非 ok 调用携带档位值的条数(应为 0)": 0,
+    "ok 调用携带错误码的条数(应为 0)": 0,
+    "examples_non_ok_with_value": [],
+    "examples_ok_with_error": []
+  },
+  "r2_no_default_fill_db": {
+    "succeeded 值不等于任何 ok 调用的条数(应为 0)": 0,
+    "succeeded 但无任何 ok 调用的条数(应为 0)": 0,
+    "examples_mismatched": [],
+    "examples_succeeded_without_ok": []
+  },
+  "invariant_checks": {
+    "N_in_N_out(成员数==规模)": true,
+    "row_no↔persona_id 双射": true,
+    "成功成员 answer_json 非 NULL": true,
+    "成功成员 answer_json 全为合法五档": true,
+    "成功成员 question_id 固定": true,
+    "五档计数之和 == valid": true,
+    "成功成员答案互不重复": true,
+    "无重复 (member_id, attempt_no)": true,
+    "每个成功成员恰一条成功 attempt": true,
+    "failed 成员不带答案": true,
+    "至多一个活动批次": true,
+    "在途峰值 ≤ 100(mock)": true,
+    "在途峰值 ≤ 100(DB)": true
+  },
+  "scenario_checks": {
+    "final_status == completed": true,
+    "valid == size": true,
+    "failed == 0": true,
+    "尝试分布匹配(健康=1次,间歇故障=3次)": true,
+    "故障流为间歇(最大连续同类失败<5)": true
+  },
+  "passed": true
+}

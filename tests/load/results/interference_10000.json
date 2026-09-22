@@ -1,0 +1,156 @@
+{
+  "scenario": "interference",
+  "size": 10000,
+  "steps": [
+    {
+      "step": "run_a.start",
+      "status": 202
+    },
+    {
+      "step": "run_a.start_repeat",
+      "status": 409,
+      "code": "INVALID_RUN_STATE"
+    },
+    {
+      "step": "run_a.pause",
+      "status": 202
+    },
+    {
+      "step": "run_a.pause_repeat",
+      "status": 200
+    },
+    {
+      "step": "run_a.reached_paused",
+      "ok": true
+    },
+    {
+      "step": "run_a.resume",
+      "status": 202
+    },
+    {
+      "step": "run_a.resume_repeat",
+      "status": 200
+    },
+    {
+      "step": "run_a.cancel",
+      "status": 202
+    },
+    {
+      "step": "run_a.cancel_repeat",
+      "status": 200
+    },
+    {
+      "step": "run_a.start_after_cancel",
+      "status": 409,
+      "code": "INVALID_RUN_STATE"
+    },
+    {
+      "step": "run_a.final_status",
+      "status": "cancelled"
+    },
+    {
+      "step": "run_b.some_succeeded",
+      "ok": true
+    },
+    {
+      "step": "run_b.gate_engaged",
+      "ok": true,
+      "gated": 1
+    },
+    {
+      "step": "run_b.succeeded_at_kill",
+      "count": 10
+    },
+    {
+      "step": "killed_worker",
+      "succeeded_before": 10,
+      "peak_in_flight_mock": 44,
+      "peak_in_flight_db": 58
+    },
+    {
+      "step": "api_restarted.read_run_b",
+      "status": "running",
+      "in_flight": 58,
+      "succeeded": 10
+    },
+    {
+      "step": "run_b.expired_leases_recovered",
+      "recovered": 58
+    },
+    {
+      "step": "run_b.after_recovery",
+      "final_status": "completed",
+      "succeeded": 10000,
+      "lost": 0,
+      "recovery_s": 104.3313,
+      "peak_in_flight_mock": 41
+    },
+    {
+      "step": "api_p95",
+      "concurrency": 10.0,
+      "requests": 200.0,
+      "run_p50": 0.013578,
+      "run_p95": 0.0283,
+      "run_p99": 0.030456,
+      "run_max": 0.037645,
+      "summary_p50": 0.057964,
+      "summary_p95": 0.073796,
+      "summary_p99": 0.081907,
+      "summary_max": 0.088471
+    }
+  ],
+  "checks": {
+    "start_202": true,
+    "start_repeat_409": true,
+    "pause_202": true,
+    "pause_repeat_200": true,
+    "reached_paused": true,
+    "resume_202": true,
+    "resume_repeat_200": true,
+    "cancel_202": true,
+    "cancel_repeat_200": true,
+    "start_after_cancel_409": true,
+    "run_a_cancelled": true,
+    "some_succeeded_before_kill": true,
+    "gate_engaged": true,
+    "running_member_at_crash": true,
+    "peak_in_flight_le_100": true,
+    "api_restart_reads_db_progress": true,
+    "no_success_lost_after_recovery": true,
+    "run_b_completed": true,
+    "run_b_all_succeeded": true,
+    "N_in_N_out(成员数==规模)": true,
+    "row_no↔persona_id 双射": true,
+    "成功成员 answer_json 非 NULL": true,
+    "成功成员 answer_json 全为合法五档": true,
+    "成功成员 question_id 固定": true,
+    "五档计数之和 == valid": true,
+    "成功成员答案互不重复": true,
+    "无重复 (member_id, attempt_no)": true,
+    "每个成功成员恰一条成功 attempt": true,
+    "failed 成员不带答案": true,
+    "至多一个活动批次": true,
+    "no_duplicate_attempt_no_after_recovery": true,
+    "api_p95_under_1s_run": true,
+    "api_p95_under_1s_summary": true
+  },
+  "api_p95": {
+    "concurrency": 10.0,
+    "requests": 200.0,
+    "run_p50": 0.01357824998558499,
+    "run_p95": 0.028299583995249122,
+    "run_p99": 0.030455708998488262,
+    "run_max": 0.03764541700365953,
+    "summary_p50": 0.05796408301102929,
+    "summary_p95": 0.07379629201022908,
+    "summary_p99": 0.08190704099251889,
+    "summary_max": 0.08847108299960382
+  },
+  "rss_peak_mb": 178.1,
+  "peak_connections": 56,
+  "peak_active_connections": 56,
+  "peak_lock_waiters": 47,
+  "max_connections": 100,
+  "db_size": "62 MB",
+  "db_size_bytes": 64502807
+}

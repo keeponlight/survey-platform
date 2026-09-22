@@ -1,0 +1,19 @@
+# 真实 provider 覆盖文件（与 compose.yaml 叠加使用）。
+#
+# 用法：
+#   cp deploy/real.env.example deploy/real.env   # 填入真实 endpoint / model / key 环境变量名
+#   docker compose -f deploy/compose.yaml -f deploy/compose.real.yaml up -d --build
+#
+# 说明：
+# - 本覆盖文件只改变 api / worker 的模型配置来源（real.env），其余服务继承 compose.yaml。
+# - API key 只以「环境变量名」形式出现；密钥本体从部署环境注入，绝不写入代码/镜像/日志/快照。
+# - 真实第三方 API 万人实测在本机**未执行**（无凭据），见 docs/acceptance.md / docs/runbook.md。
+
+services:
+  api:
+    env_file:
+      - real.env
+
+  worker:
+    env_file:
+      - real.env

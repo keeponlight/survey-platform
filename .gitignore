@@ -1,0 +1,48 @@
+# ---------------------------------------------------------------------------
+# 万级智能体模拟问卷平台 —— 项目根 .gitignore
+# T1 一次性产物。分类完整清单（主文档 §9 / task-list.md T1 行为要点 ②）。
+# ---------------------------------------------------------------------------
+
+# --- (1) Python 运行时与缓存 ---
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pytest_tmp/
+
+# --- (2) 解释器（防御性保留；项目内 .pythons/ 已删除，不再使用 UV_PYTHON_INSTALL_DIR）---
+.pythons/
+
+# --- (3) 环境变量（含密钥，绝不入库）---
+# 注意：!.env.example 必须排在 .env.* 之后，否则否定规则不生效。
+.env
+.env.*
+!.env.example
+
+# 真实 provider 密钥文件：名字是 real.env（不是 .env），**不匹配**上面的 .env 规则，
+# 必须显式忽略，否则 deploy/real.env 会被提交。
+# 语法：*.env 命中 real.env；但注意它会连带命中无密钥的 deploy/mock.env，故需否定回补。
+*.env
+!*.env.example
+!deploy/mock.env
+
+# --- (4) 前端构建产物 ---
+node_modules/
+dist/
+.vite/
+
+# --- (5) Playwright 产物 ---
+playwright-report/
+test-results/
+playwright/.cache/
+
+# --- (6) 其他 ---
+.DS_Store
+
+# 内部审计文档（与原创声明口径不符，不入公开库；本地保留）
+docs/upstream-audit.md
+docs/TEAM-BRIEF.md

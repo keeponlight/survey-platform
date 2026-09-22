@@ -1,0 +1,1516 @@
+{
+  "round": "cap8",
+  "round_label": "第 2 轮：10 行切片",
+  "result_file": "real_50_cap8_maxtok4096.json",
+  "generated_at": "2026-09-21T12:52:49.757001+00:00",
+  "provider_config": {
+    "model_provider": "openai_compatible",
+    "model_name": "deepseek-flash",
+    "endpoint": "https://api.deepseek.com",
+    "request_url": "https://api.deepseek.com/chat/completions",
+    "model_config_id": "prod-deepseek-flash",
+    "model_timeout_seconds": 60.0,
+    "model_max_output_tokens": 4096,
+    "model_rpm_configured": 600,
+    "model_tpm_configured": 1000000,
+    "agent_concurrency": 8,
+    "price_configured": false,
+    "api_key_present": true
+  },
+  "execution_env": {
+    "worker_in_same_process": true,
+    "evidence": "Worker / InstrumentedExecutor / RecordingProvider 均由本脚本**进程内**构造；worker 经 worker.serve() 在本进程 asyncio loop 内执行真实模型调用；控制面 HTTP 经 httpx.ASGITransport 调用同一 app 对象，无容器/子进程/独立网络栈。",
+    "override_mechanism": "进程环境覆盖：build_settings() 把 MODEL_MAX_OUTPUT_TOKENS=4096 写入 merged env 再 Settings.from_env()；deploy/real.env 未改。",
+    "model_max_output_tokens_effective": 4096,
+    "real_env_model_max_output_tokens": "256",
+    "on_wire_max_tokens_observed": [
+      4096
+    ],
+    "python_pid": 34135
+  },
+  "sample": {
+    "source_file": "/Users/zhao/Desktop/User_360_Analysis_sample50.csv",
+    "row_count": 10,
+    "is_slice": true,
+    "slice_rows": 10,
+    "persona_id_column": "user_id",
+    "profile_text_columns": [
+      "age_band",
+      "gender",
+      "city_tier",
+      "city",
+      "education",
+      "occupation",
+      "marital_status",
+      "monthly_disposable_income",
+      "beauty_monthly_spend",
+      "consumption_style",
+      "preferred_categories",
+      "price_band_pref",
+      "ingredient_focus",
+      "ingredient_tags",
+      "purchase_channels",
+      "media_platforms",
+      "content_preferences",
+      "kol_types",
+      "big5_openness",
+      "big5_conscientiousness",
+      "big5_extraversion",
+      "big5_agreeableness",
+      "big5_neuroticism",
+      "decision_style",
+      "brand_affinity"
+    ],
+    "n_profile_columns": 25,
+    "sample_groups_note": "样本按 _sample_group 分 G1–G11 数据完整度层（来源 synthetic_calibrated）；本轮只取 L1 画像列，不补全画像。"
+  },
+  "product": {
+    "name": "怡兰葆 白茶赤芝系列",
+    "description": "怡兰葆品牌推出以白茶与赤芝为核心成分的护肤系列。",
+    "price": "328.00",
+    "price_unit": "30ml 精华",
+    "time_range": "未来 30 天",
+    "purchase_conditions": null
+  },
+  "budget": {
+    "budget_limit": "50.000000",
+    "budget_currency": "CNY",
+    "request_limit": 30,
+    "request_limit_formula": "3 * sample_size",
+    "final_status_db": "completed",
+    "pause_reason_db": null,
+    "actual_cost": "0.000000",
+    "reserved_cost": "0.000000",
+    "unknown_cost_count": 10,
+    "requests_reserved": 10
+  },
+  "steps": [
+    {
+      "step": "create_survey",
+      "status": 201,
+      "duration_ms": 48.06,
+      "model_calls": 0
+    },
+    {
+      "step": "import",
+      "status": 201,
+      "duration_ms": 5.74,
+      "import_id": "82ec4c47-5670-442a-b589-7a4bdf94eab0",
+      "row_count": 10,
+      "model_calls": 0
+    },
+    {
+      "step": "preview",
+      "status": 200,
+      "duration_ms": 38.94,
+      "sample_size": 10,
+      "estimated_cost": null,
+      "cost_is_unknown": true,
+      "prompt_previews": 3,
+      "model_calls_after_preview": 0
+    },
+    {
+      "step": "create_run",
+      "status": 201,
+      "duration_ms": 18.41,
+      "run_id": "b7b2156d-b5a2-4347-8862-e8939ee072b6",
+      "sample_size": 10,
+      "request_limit": 30,
+      "idempotency_key": "624f5a41009e4962bf92fe5b150e69c9",
+      "model_calls": 0
+    },
+    {
+      "step": "start",
+      "status": 202,
+      "duration_ms": 8.32,
+      "model_calls": 0
+    },
+    {
+      "step": "worker_serve",
+      "status": "converged",
+      "duration_ms": 15152.7,
+      "final_status": "completed",
+      "model_calls": 10,
+      "in_flight_last": 1
+    },
+    {
+      "step": "results",
+      "status": 200,
+      "duration_ms": 5.22,
+      "total": 10,
+      "items": 10
+    },
+    {
+      "step": "summary",
+      "status": 200,
+      "duration_ms": 7.04,
+      "valid_count": 10,
+      "planned": null
+    },
+    {
+      "step": "export_csv",
+      "status": 200,
+      "duration_ms": 6.96,
+      "content_type": "text/csv; charset=utf-8",
+      "bytes": 3347,
+      "has_utf8_bom": true,
+      "csv_data_rows": 10
+    },
+    {
+      "step": "get_run",
+      "status": 200,
+      "duration_ms": 3.32,
+      "in_flight": 0,
+      "throttled": 0,
+      "target_concurrency": 8
+    }
+  ],
+  "resume_events": [],
+  "network": {
+    "summary": {
+      "total_requests": 10,
+      "ok_count": 10,
+      "error_count": 0,
+      "success_rate": 1.0,
+      "http_429_count": 0,
+      "http_5xx_count": 0,
+      "http_4xx_other_count": 0,
+      "timeout_count": 0,
+      "rate_limited_count": 0,
+      "auth_count": 0,
+      "server_error_count": 0,
+      "protocol_count": 0,
+      "retry_requests": 0,
+      "retry_attempts_total": 0,
+      "error_code_breakdown": {},
+      "finish_reason_breakdown": {
+        "stop": 10
+      },
+      "latency_ms_all": {
+        "p50": 3905.0,
+        "p95": 14360.0,
+        "p99": 14360.0,
+        "max": 14360.0,
+        "min": 1480.0
+      },
+      "latency_ms_ok": {
+        "p50": 3905.0,
+        "p95": 14360.0,
+        "p99": 14360.0,
+        "max": 14360.0,
+        "min": 1480.0
+      },
+      "latency_ms_wire": {
+        "p50": 3905.0,
+        "p95": 14360.0,
+        "p99": 14360.0,
+        "max": 14360.0,
+        "min": 1479.0
+      },
+      "duration_ms_sum": 47895,
+      "prompt_tokens_total": 8558,
+      "completion_tokens_total": 8075,
+      "tokens_total": 16633,
+      "requests_with_usage": 10,
+      "requests_without_usage": 0,
+      "reasoning_tokens_total": 7532,
+      "requests_with_reasoning_tokens": 10,
+      "observed_request_max_tokens_values": [
+        4096
+      ],
+      "requests_with_response_format": 10,
+      "network_window_s": 14.9679,
+      "serve_duration_s": 15.1527,
+      "measured_rpm": 40.086,
+      "measured_tpm": 66674.751,
+      "configured_rpm": 600,
+      "configured_tpm": 1000000,
+      "http_requests_on_wire": 10,
+      "http_responses_on_wire": 10,
+      "distinct_http_connections": 8,
+      "wire_status_matched_all": true,
+      "model_max_output_tokens": 4096,
+      "model_timeout_seconds": 60.0
+    },
+    "requests": [
+      {
+        "seq": 1,
+        "persona_id": "ILB_8fd1b31071793204",
+        "attempt_no": 1,
+        "method": "POST",
+        "url": "https://api.deepseek.com/chat/completions",
+        "http_status": 200,
+        "wire_status": 200,
+        "duration_ms": 1480,
+        "wall_ms": 1480,
+        "wire_ms": 1479,
+        "retry": false,
+        "retry_no": 0,
+        "retry_after_s": null,
+        "prompt_tokens": 859,
+        "completion_tokens": 174,
+        "reasoning_tokens": 119,
+        "wire_prompt_tokens": 859,
+        "wire_completion_tokens": 174,
+        "req_max_tokens": 4096,
+        "req_has_response_format": true,
+        "finish_reason": "stop",
+        "provider_request_id": "3da6211f-845b-4234-9f69-6aabf279d710",
+        "error_code": null,
+        "error_message": null,
+        "t_start_offset_s": 1.088273,
+        "t_end_offset_s": 2.568813
+      },
+      {
+        "seq": 2,
+        "persona_id": "ILB_8a9252894bc22088",
+        "attempt_no": 1,
+        "method": "POST",
+        "url": "https://api.deepseek.com/chat/completions",
+        "http_status": 200,
+        "wire_status": 200,
+        "duration_ms": 2378,
+        "wall_ms": 2378,
+        "wire_ms": 2378,
+        "retry": false,
+        "retry_no": 0,
+        "retry_after_s": null,
+        "prompt_tokens": 852,
+        "completion_tokens": 350,
+        "reasoning_tokens": 286,
+        "wire_prompt_tokens": 852,
+        "wire_completion_tokens": 350,
+        "req_max_tokens": 4096,
+        "req_has_response_format": true,
+        "finish_reason": "stop",
+        "provider_request_id": "862d4b17-1d70-4d47-b00a-8facef1fe15d",
+        "error_code": null,
+        "error_message": null,
+        "t_start_offset_s": 0.480808,
+        "t_end_offset_s": 2.859362
+      },
+      {
+        "seq": 3,
+        "persona_id": "ILB_69ffbc388eec14eb",
+        "attempt_no": 1,
+        "method": "POST",
+        "url": "https://api.deepseek.com/chat/completions",
+        "http_status": 200,
+        "wire_status": 200,
+        "duration_ms": 2292,
+        "wall_ms": 2293,
+        "wire_ms": 2292,
+        "retry": false,
+        "retry_no": 0,
+        "retry_after_s": null,
+        "prompt_tokens": 854,
+        "completion_tokens": 392,
+        "reasoning_tokens": 344,
+        "wire_prompt_tokens": 854,
+        "wire_completion_tokens": 392,
+        "req_max_tokens": 4096,
+        "req_has_response_format": true,
+        "finish_reason": "stop",
+        "provider_request_id": "fa40e448-e3c8-47b4-8be4-1db32994d3ba",
+        "error_code": null,
+        "error_message": null,
+        "t_start_offset_s": 0.580907,
+        "t_end_offset_s": 2.873971
+      },
+      {
+        "seq": 4,
+        "persona_id": "ILB_99e0969c5f36af22",
+        "attempt_no": 1,
+        "method": "POST",
+        "url": "https://api.deepseek.com/chat/completions",
+        "http_status": 200,
+        "wire_status": 200,
+        "duration_ms": 4043,
+        "wall_ms": 4043,
+        "wire_ms": 4043,
+        "retry": false,
+        "retry_no": 0,
+        "retry_after_s": null,
+        "prompt_tokens": 855,
+        "completion_tokens": 656,
+        "reasoning_tokens": 599,
+        "wire_prompt_tokens": 855,
+        "wire_completion_tokens": 656,
+        "req_max_tokens": 4096,
+        "req_has_response_format": true,
+        "finish_reason": "stop",
+        "provider_request_id": "2682f91c-9f48-4bac-a83b-ee7d598a4bce",
+        "error_code": null,
+        "error_message": null,
+        "t_start_offset_s": 0.380008,
+        "t_end_offset_s": 4.423688
+      },
+      {
+        "seq": 5,
+        "persona_id": "ILB_46f62739c8e6e5b8",
+        "attempt_no": 1,
+        "method": "POST",
+        "url": "https://api.deepseek.com/chat/completions",
+        "http_status": 200,
+        "wire_status": 200,
+        "duration_ms": 3624,
+        "wall_ms": 3624,
+        "wire_ms": 3624,
+        "retry": false,
+        "retry_no": 0,
+        "retry_after_s": null,
+        "prompt_tokens": 850,
+        "completion_tokens": 574,
+        "reasoning_tokens": 528,
+        "wire_prompt_tokens": 850,
+        "wire_completion_tokens": 574,
+        "req_max_tokens": 4096,
+        "req_has_response_format": true,
+        "finish_reason": "stop",
+        "provider_request_id": "66c4f031-be02-4e02-9f69-d5c6d576875c",
+        "error_code": null,
+        "error_message": null,
+        "t_start_offset_s": 0.886217,
+        "t_end_offset_s": 4.510894
+      },
+      {
+        "seq": 6,
+        "persona_id": "ILB_2756fd40a10e6a36",
+        "attempt_no": 1,
+        "method": "POST",
+        "url": "https://api.deepseek.com/chat/completions",
+        "http_status": 200,
+        "wire_status": 200,
+        "duration_ms": 4989,
+        "wall_ms": 4989,
+        "wire_ms": 4989,
+        "retry": false,
+        "retry_no": 0,
+        "retry_after_s": null,
+        "prompt_tokens": 850,
+        "completion_tokens": 855,
+        "reasoning_tokens": 794,
+        "wire_prompt_tokens": 850,
+        "wire_completion_tokens": 855,
+        "req_max_tokens": 4096,
+        "req_has_response_format": true,
+        "finish_reason": "stop",
+        "provider_request_id": "b331477b-67dd-44ca-86a5-1738a8df8af5",
+        "error_code": null,
+        "error_message": null,
+        "t_start_offset_s": 0.782285,
+        "t_end_offset_s": 5.772082
+      },
+      {
+        "seq": 7,
+        "persona_id": "ILB_4f3d203e16a1e1e7",
+        "attempt_no": 1,
+        "method": "POST",
+        "url": "https://api.deepseek.com/chat/completions",
+        "http_status": 200,
+        "wire_status": 200,
+        "duration_ms": 4203,
+        "wall_ms": 4203,
+        "wire_ms": 4203,
+        "retry": false,
+        "retry_no": 0,
+        "retry_after_s": null,
+        "prompt_tokens": 866,
+        "completion_tokens": 728,
+        "reasoning_tokens": 682,
+        "wire_prompt_tokens": 866,
+        "wire_completion_tokens": 728,
+        "req_max_tokens": 4096,
+        "req_has_response_format": true,
+        "finish_reason": "stop",
+        "provider_request_id": "b9c87728-ddd8-4cf7-92d9-fe81ff8ea8f1",
+        "error_code": null,
+        "error_message": null,
+        "t_start_offset_s": 2.609577,
+        "t_end_offset_s": 6.813223
+      },
+      {
+        "seq": 8,
+        "persona_id": "ILB_753599de60fe02e4",
+        "attempt_no": 1,
+        "method": "POST",
+        "url": "https://api.deepseek.com/chat/completions",
+        "http_status": 200,
+        "wire_status": 200,
+        "duration_ms": 3905,
+        "wall_ms": 3905,
+        "wire_ms": 3905,
+        "retry": false,
+        "retry_no": 0,
+        "retry_after_s": null,
+        "prompt_tokens": 854,
+        "completion_tokens": 664,
+        "reasoning_tokens": 613,
+        "wire_prompt_tokens": 854,
+        "wire_completion_tokens": 664,
+        "req_max_tokens": 4096,
+        "req_has_response_format": true,
+        "finish_reason": "stop",
+        "provider_request_id": "4a6dc27a-70e3-4653-ba5c-dd9c7d88e30b",
+        "error_code": null,
+        "error_message": null,
+        "t_start_offset_s": 2.908824,
+        "t_end_offset_s": 6.814409
+      },
+      {
+        "seq": 9,
+        "persona_id": "ILB_4a43d9cca276dfef",
+        "attempt_no": 1,
+        "method": "POST",
+        "url": "https://api.deepseek.com/chat/completions",
+        "http_status": 200,
+        "wire_status": 200,
+        "duration_ms": 6621,
+        "wall_ms": 6621,
+        "wire_ms": 6621,
+        "retry": false,
+        "retry_no": 0,
+        "retry_after_s": null,
+        "prompt_tokens": 865,
+        "completion_tokens": 1120,
+        "reasoning_tokens": 1063,
+        "wire_prompt_tokens": 865,
+        "wire_completion_tokens": 1120,
+        "req_max_tokens": 4096,
+        "req_has_response_format": true,
+        "finish_reason": "stop",
+        "provider_request_id": "69741a62-f377-4a4e-a77a-1ea385b277c1",
+        "error_code": null,
+        "error_message": null,
+        "t_start_offset_s": 0.681952,
+        "t_end_offset_s": 7.303566
+      },
+      {
+        "seq": 10,
+        "persona_id": "ILB_89b53717d50aa732",
+        "attempt_no": 1,
+        "method": "POST",
+        "url": "https://api.deepseek.com/chat/completions",
+        "http_status": 200,
+        "wire_status": 200,
+        "duration_ms": 14360,
+        "wall_ms": 14360,
+        "wire_ms": 14360,
+        "retry": false,
+        "retry_no": 0,
+        "retry_after_s": null,
+        "prompt_tokens": 853,
+        "completion_tokens": 2562,
+        "reasoning_tokens": 2504,
+        "wire_prompt_tokens": 853,
+        "wire_completion_tokens": 2562,
+        "req_max_tokens": 4096,
+        "req_has_response_format": true,
+        "finish_reason": "stop",
+        "provider_request_id": "179db32e-04d5-44d9-b6b6-2b6a2a5a9a6d",
+        "error_code": null,
+        "error_message": null,
+        "t_start_offset_s": 0.987029,
+        "t_end_offset_s": 15.347893
+      }
+    ]
+  },
+  "concurrency": {
+    "interval_s": 0.1,
+    "cap": 8,
+    "samples": 143,
+    "peak_in_flight_limiter": 8,
+    "peak_db_running_members": 8,
+    "peak_db_running_attempts": 8,
+    "last_in_flight_limiter": 1,
+    "always_le_cap": true,
+    "rebuilt_peak_in_flight_from_requests": 8,
+    "rolling_refill": {
+      "first_completion_offset_s": 2.5688,
+      "starts_strictly_after_first_completion": 2,
+      "max_wait_from_a_completion_to_next_start_ms": 49.46,
+      "total_calls": 10
+    },
+    "series": [
+      [
+        0.2206,
+        0,
+        0,
+        0
+      ],
+      [
+        0.4635,
+        8,
+        8,
+        8
+      ],
+      [
+        0.5726,
+        8,
+        8,
+        8
+      ],
+      [
+        0.6835,
+        8,
+        8,
+        8
+      ],
+      [
+        0.7968,
+        8,
+        8,
+        8
+      ],
+      [
+        0.9124,
+        8,
+        8,
+        8
+      ],
+      [
+        1.0194,
+        8,
+        8,
+        8
+      ],
+      [
+        1.1295,
+        8,
+        8,
+        8
+      ],
+      [
+        1.2449,
+        8,
+        8,
+        8
+      ],
+      [
+        1.3552,
+        8,
+        8,
+        8
+      ],
+      [
+        1.4647,
+        8,
+        8,
+        8
+      ],
+      [
+        1.5799,
+        8,
+        8,
+        8
+      ],
+      [
+        1.6898,
+        8,
+        8,
+        8
+      ],
+      [
+        1.8058,
+        8,
+        8,
+        8
+      ],
+      [
+        1.9138,
+        8,
+        8,
+        8
+      ],
+      [
+        2.0268,
+        8,
+        8,
+        8
+      ],
+      [
+        2.1367,
+        8,
+        8,
+        8
+      ],
+      [
+        2.2443,
+        8,
+        8,
+        8
+      ],
+      [
+        2.3494,
+        8,
+        8,
+        8
+      ],
+      [
+        2.4635,
+        8,
+        8,
+        8
+      ],
+      [
+        2.5758,
+        8,
+        8,
+        8
+      ],
+      [
+        2.6873,
+        8,
+        8,
+        8
+      ],
+      [
+        2.7962,
+        8,
+        8,
+        8
+      ],
+      [
+        2.906,
+        8,
+        7,
+        7
+      ],
+      [
+        3.0135,
+        8,
+        7,
+        7
+      ],
+      [
+        3.1196,
+        8,
+        7,
+        7
+      ],
+      [
+        3.225,
+        7,
+        7,
+        7
+      ],
+      [
+        3.3294,
+        8,
+        7,
+        7
+      ],
+      [
+        3.4357,
+        8,
+        7,
+        7
+      ],
+      [
+        3.5416,
+        8,
+        7,
+        7
+      ],
+      [
+        3.6473,
+        7,
+        7,
+        7
+      ],
+      [
+        3.7527,
+        7,
+        7,
+        7
+      ],
+      [
+        3.8598,
+        8,
+        7,
+        7
+      ],
+      [
+        3.967,
+        8,
+        7,
+        7
+      ],
+      [
+        4.0739,
+        8,
+        7,
+        7
+      ],
+      [
+        4.1813,
+        8,
+        7,
+        7
+      ],
+      [
+        4.2906,
+        8,
+        7,
+        7
+      ],
+      [
+        4.3983,
+        7,
+        7,
+        7
+      ],
+      [
+        4.5057,
+        6,
+        6,
+        6
+      ],
+      [
+        4.6095,
+        5,
+        5,
+        5
+      ],
+      [
+        4.7131,
+        8,
+        5,
+        5
+      ],
+      [
+        4.8172,
+        8,
+        5,
+        5
+      ],
+      [
+        4.922,
+        5,
+        5,
+        5
+      ],
+      [
+        5.0257,
+        5,
+        5,
+        5
+      ],
+      [
+        5.1291,
+        5,
+        5,
+        5
+      ],
+      [
+        5.2337,
+        8,
+        5,
+        5
+      ],
+      [
+        5.3383,
+        5,
+        5,
+        5
+      ],
+      [
+        5.4418,
+        5,
+        5,
+        5
+      ],
+      [
+        5.5448,
+        8,
+        5,
+        5
+      ],
+      [
+        5.6493,
+        5,
+        5,
+        5
+      ],
+      [
+        5.7527,
+        5,
+        5,
+        5
+      ],
+      [
+        5.8559,
+        8,
+        4,
+        4
+      ],
+      [
+        5.9611,
+        8,
+        4,
+        4
+      ],
+      [
+        6.0662,
+        8,
+        4,
+        4
+      ],
+      [
+        6.1699,
+        4,
+        4,
+        4
+      ],
+      [
+        6.2723,
+        4,
+        4,
+        4
+      ],
+      [
+        6.375,
+        4,
+        4,
+        4
+      ],
+      [
+        6.4774,
+        4,
+        4,
+        4
+      ],
+      [
+        6.5802,
+        4,
+        4,
+        4
+      ],
+      [
+        6.6837,
+        4,
+        4,
+        4
+      ],
+      [
+        6.7874,
+        4,
+        4,
+        4
+      ],
+      [
+        6.8925,
+        3,
+        2,
+        2
+      ],
+      [
+        6.9963,
+        2,
+        2,
+        2
+      ],
+      [
+        7.0993,
+        8,
+        2,
+        2
+      ],
+      [
+        7.2041,
+        2,
+        2,
+        2
+      ],
+      [
+        7.3094,
+        2,
+        1,
+        1
+      ],
+      [
+        7.4128,
+        8,
+        1,
+        1
+      ],
+      [
+        7.5182,
+        1,
+        1,
+        1
+      ],
+      [
+        7.6211,
+        1,
+        1,
+        1
+      ],
+      [
+        7.7253,
+        1,
+        1,
+        1
+      ],
+      [
+        7.8277,
+        8,
+        1,
+        1
+      ],
+      [
+        7.9337,
+        1,
+        1,
+        1
+      ],
+      [
+        8.0368,
+        1,
+        1,
+        1
+      ],
+      [
+        8.1419,
+        1,
+        1,
+        1
+      ],
+      [
+        8.2459,
+        1,
+        1,
+        1
+      ],
+      [
+        8.351,
+        1,
+        1,
+        1
+      ],
+      [
+        8.4545,
+        1,
+        1,
+        1
+      ],
+      [
+        8.5581,
+        8,
+        1,
+        1
+      ],
+      [
+        8.6629,
+        1,
+        1,
+        1
+      ],
+      [
+        8.7659,
+        8,
+        1,
+        1
+      ],
+      [
+        8.8718,
+        1,
+        1,
+        1
+      ],
+      [
+        8.9748,
+        3,
+        1,
+        1
+      ],
+      [
+        9.0792,
+        2,
+        1,
+        1
+      ],
+      [
+        9.1836,
+        1,
+        1,
+        1
+      ],
+      [
+        9.2876,
+        8,
+        1,
+        1
+      ],
+      [
+        9.393,
+        1,
+        1,
+        1
+      ],
+      [
+        9.4972,
+        8,
+        1,
+        1
+      ],
+      [
+        9.6028,
+        1,
+        1,
+        1
+      ],
+      [
+        9.7051,
+        8,
+        1,
+        1
+      ],
+      [
+        9.8113,
+        1,
+        1,
+        1
+      ],
+      [
+        9.9137,
+        8,
+        1,
+        1
+      ],
+      [
+        10.0186,
+        1,
+        1,
+        1
+      ],
+      [
+        10.1223,
+        1,
+        1,
+        1
+      ],
+      [
+        10.2276,
+        8,
+        1,
+        1
+      ],
+      [
+        10.3336,
+        1,
+        1,
+        1
+      ],
+      [
+        10.4362,
+        8,
+        1,
+        1
+      ],
+      [
+        10.5427,
+        1,
+        1,
+        1
+      ],
+      [
+        10.646,
+        1,
+        1,
+        1
+      ],
+      [
+        10.7514,
+        1,
+        1,
+        1
+      ],
+      [
+        10.8546,
+        1,
+        1,
+        1
+      ],
+      [
+        10.9589,
+        8,
+        1,
+        1
+      ],
+      [
+        11.0659,
+        1,
+        1,
+        1
+      ],
+      [
+        11.1686,
+        8,
+        1,
+        1
+      ],
+      [
+        11.2748,
+        1,
+        1,
+        1
+      ],
+      [
+        11.3779,
+        1,
+        1,
+        1
+      ],
+      [
+        11.4831,
+        3,
+        1,
+        1
+      ],
+      [
+        11.5873,
+        1,
+        1,
+        1
+      ],
+      [
+        11.6897,
+        8,
+        1,
+        1
+      ],
+      [
+        11.7966,
+        1,
+        1,
+        1
+      ],
+      [
+        11.8992,
+        8,
+        1,
+        1
+      ],
+      [
+        12.0064,
+        1,
+        1,
+        1
+      ],
+      [
+        12.11,
+        1,
+        1,
+        1
+      ],
+      [
+        12.2162,
+        8,
+        1,
+        1
+      ],
+      [
+        12.3221,
+        1,
+        1,
+        1
+      ],
+      [
+        12.4255,
+        1,
+        1,
+        1
+      ],
+      [
+        12.5308,
+        1,
+        1,
+        1
+      ],
+      [
+        12.6347,
+        1,
+        1,
+        1
+      ],
+      [
+        12.7387,
+        8,
+        1,
+        1
+      ],
+      [
+        12.8455,
+        1,
+        1,
+        1
+      ],
+      [
+        12.9488,
+        8,
+        1,
+        1
+      ],
+      [
+        13.0543,
+        6,
+        1,
+        1
+      ],
+      [
+        13.1589,
+        1,
+        1,
+        1
+      ],
+      [
+        13.262,
+        8,
+        1,
+        1
+      ],
+      [
+        13.3682,
+        1,
+        1,
+        1
+      ],
+      [
+        13.4715,
+        8,
+        1,
+        1
+      ],
+      [
+        13.577,
+        7,
+        1,
+        1
+      ],
+      [
+        13.6819,
+        1,
+        1,
+        1
+      ],
+      [
+        13.7864,
+        8,
+        1,
+        1
+      ],
+      [
+        13.8913,
+        1,
+        1,
+        1
+      ],
+      [
+        13.9942,
+        8,
+        1,
+        1
+      ],
+      [
+        14.1015,
+        1,
+        1,
+        1
+      ],
+      [
+        14.2045,
+        8,
+        1,
+        1
+      ],
+      [
+        14.3118,
+        1,
+        1,
+        1
+      ],
+      [
+        14.4141,
+        8,
+        1,
+        1
+      ],
+      [
+        14.5192,
+        1,
+        1,
+        1
+      ],
+      [
+        14.6222,
+        1,
+        1,
+        1
+      ],
+      [
+        14.7267,
+        8,
+        1,
+        1
+      ],
+      [
+        14.8312,
+        1,
+        1,
+        1
+      ],
+      [
+        14.9341,
+        8,
+        1,
+        1
+      ],
+      [
+        15.0398,
+        1,
+        1,
+        1
+      ],
+      [
+        15.1435,
+        1,
+        1,
+        1
+      ],
+      [
+        15.248,
+        8,
+        1,
+        1
+      ],
+      [
+        15.3534,
+        1,
+        1,
+        1
+      ]
+    ],
+    "series_columns": [
+      "t_offset_s",
+      "in_flight_limiter",
+      "db_running_members",
+      "db_running_attempts"
+    ]
+  },
+  "invariants": {
+    "checks": {
+      "N_in_N_out(成员数==规模)": true,
+      "row_no↔persona_id 双射": true,
+      "成功成员 answer_json 非 NULL": true,
+      "成功成员 answer_json 全为合法五档": true,
+      "成功成员 question_id 固定": true,
+      "五档计数之和 == valid": true,
+      "成功成员答案互不重复": true,
+      "无重复 (member_id, attempt_no)": true,
+      "每个成功成员恰一条成功 attempt": true,
+      "failed 成员不带答案": true,
+      "至多一个活动批次": true
+    },
+    "all_pass": true,
+    "raw": {
+      "total_members": 10,
+      "counts": {
+        "succeeded": 10
+      },
+      "valid": 10,
+      "bucket_sum": 10,
+      "succeeded_null_answers": 0,
+      "succeeded_illegal_values": 0,
+      "succeeded_bad_question_id": 0,
+      "distinct_persona": 10,
+      "distinct_row_no": 10,
+      "attempts_total": 10,
+      "retry_distribution": {
+        "1": 10
+      },
+      "failed_error_codes": {}
+    }
+  },
+  "final": {
+    "run_id": "b7b2156d-b5a2-4347-8862-e8939ee072b6",
+    "final_status": "completed",
+    "member_status_counts": {
+      "succeeded": 10
+    },
+    "succeeded_answers": 10
+  },
+  "runtime": {
+    "rss_peak_mb": 124.4,
+    "peak_connections": 16,
+    "peak_active_connections": 15,
+    "peak_lock_waiters": 0,
+    "max_connections": 100,
+    "db_size": "9007 kB"
+  },
+  "notes": [
+    "该 run 使用 10 行切片（sample50_head10.csv），非全样本；切片是刻意的插桩手段（验证限流器收紧）。"
+  ],
+  "summary_endpoint": {
+    "run_id": "b7b2156d-b5a2-4347-8862-e8939ee072b6",
+    "status": "completed",
+    "question_id": "purchase_intent",
+    "prompt_version": "purchase-intent-zh-v1",
+    "sample_size": 10,
+    "valid_count": 10,
+    "failed_count": 0,
+    "cancelled_count": 0,
+    "pending_count": 0,
+    "running_count": 0,
+    "retry_wait_count": 0,
+    "succeeded_count": 10,
+    "coverage": 1.0,
+    "progress": 1.0,
+    "top2box": 0.3,
+    "mean_score": 2.6,
+    "buckets": [
+      {
+        "value": "definitely_not",
+        "label": "肯定不会购买",
+        "score": 1,
+        "count": 0,
+        "rate": 0.0
+      },
+      {
+        "value": "probably_not",
+        "label": "可能不会购买",
+        "score": 2,
+        "count": 7,
+        "rate": 0.7
+      },
+      {
+        "value": "unsure",
+        "label": "不确定",
+        "score": 3,
+        "count": 0,
+        "rate": 0.0
+      },
+      {
+        "value": "probably_yes",
+        "label": "可能会购买",
+        "score": 4,
+        "count": 3,
+        "rate": 0.3
+      },
+      {
+        "value": "definitely_yes",
+        "label": "肯定会购买",
+        "score": 5,
+        "count": 0,
+        "rate": 0.0
+      }
+    ],
+    "age_groups": null,
+    "city_groups": null,
+    "report_revision": "c58b8f82ad70e8e1",
+    "as_of": "2026-09-21T12:52:49.719601Z",
+    "is_partial": false,
+    "simulated": true,
+    "simulation_label": "模拟购买意向"
+  }
+}

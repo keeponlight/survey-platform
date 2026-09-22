@@ -1,0 +1,29 @@
+{
+  "round": 3,
+  "run_id": "ffd7f318-b745-4013-906b-ce905c46cef7",
+  "note": "final=completed",
+  "final_status": "completed",
+  "pause_reason": null,
+  "sample_size": 50,
+  "succeeded": 50,
+  "failed": 0,
+  "retry_wait": 0,
+  "total_attempts": 57,
+  "error_code_counts": {
+    "TIMEOUT": 7
+  },
+  "http_duration_ms_success": {
+    "min": 6120,
+    "p50": 30972,
+    "p90": 85490,
+    "p95": 108328,
+    "p99": 116717,
+    "max": 116717,
+    "mean": 41712
+  },
+  "members_by_attempts_used": {
+    "1": 44,
+    "2": 5,
+    "3": 1
+  }
+}

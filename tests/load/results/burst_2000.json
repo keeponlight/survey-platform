@@ -1,0 +1,98 @@
+{
+  "scenario": "burst",
+  "size": 2000,
+  "normal_call_budget": 30,
+  "steps": [
+    {
+      "step": "burst.config",
+      "normal_call_budget": 30,
+      "retry_backoff": "real(2s/8s)"
+    },
+    {
+      "step": "start",
+      "status": 202
+    },
+    {
+      "step": "burst.paused_status",
+      "status": "paused",
+      "peak_in_flight_mock": 41,
+      "peak_in_flight_db": 60
+    },
+    {
+      "step": "burst.db_run_row",
+      "status": "paused",
+      "pause_reason": "api_unavailable"
+    },
+    {
+      "step": "burst.member_counts",
+      "counts": {
+        "pending": 1909,
+        "retry_wait": 61,
+        "succeeded": 30
+      },
+      "preserved": 1970
+    },
+    {
+      "step": "burst.succeeded_before_recovery",
+      "count": 30
+    },
+    {
+      "step": "burst.call_log",
+      "total": 91,
+      "statuses": {
+        "ok": 30,
+        "error": 61
+      },
+      "errors": {
+        "RATE_LIMITED": 33,
+        "SERVER_ERROR": 28
+      }
+    },
+    {
+      "step": "resume",
+      "status": 202
+    },
+    {
+      "step": "recovered",
+      "final_status": "completed",
+      "succeeded": 2000,
+      "lost": 0,
+      "recovery_s": 17.172
+    }
+  ],
+  "checks": {
+    "start_202": true,
+    "converged_paused": true,
+    "peak_in_flight_le_100": true,
+    "db_status_paused": true,
+    "db_pause_reason_api_unavailable": true,
+    "preserved_non_terminal_members": true,
+    "no_member_misjudged_failed": true,
+    "succeeded_before_equals_budget": true,
+    "burst_non_ok_with_value_zero": true,
+    "burst_has_supplier_errors": true,
+    "resume_202": true,
+    "no_success_lost_after_resume": true,
+    "completed_after_resume": true,
+    "all_members_succeeded": true,
+    "N_in_N_out(成员数==规模)": true,
+    "row_no↔persona_id 双射": true,
+    "成功成员 answer_json 非 NULL": true,
+    "成功成员 answer_json 全为合法五档": true,
+    "成功成员 question_id 固定": true,
+    "五档计数之和 == valid": true,
+    "成功成员答案互不重复": true,
+    "无重复 (member_id, attempt_no)": true,
+    "每个成功成员恰一条成功 attempt": true,
+    "failed 成员不带答案": true,
+    "至多一个活动批次": true,
+    "no_default_fill_db": true
+  },
+  "rss_peak_mb": 138.9,
+  "peak_connections": 55,
+  "peak_active_connections": 55,
+  "peak_lock_waiters": 47,
+  "max_connections": 100,
+  "db_size": "21 MB",
+  "db_size_bytes": 22084631
+}

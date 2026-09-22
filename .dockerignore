@@ -1,0 +1,33 @@
+# Docker 构建上下文卫生（deploy/compose.yaml 的 build.context = 项目根）。
+#
+# 为什么必须存在：无 .dockerignore 时 `COPY backend/ ./` 会把**宿主机的**
+# `backend/.venv`（macOS 二进制/绝对路径符号链接）覆盖掉镜像内 `uv sync` 生成的
+# Linux venv → 容器内 `import sqlalchemy` / `alembic` 全部失败（api 退出 127、
+# worker 退出 1）。见 docs/e2e-report-t6.md。
+#
+# 只排除构建**不需要**的本地产物；所有源码/配置/锁文件均保留。
+
+# (1) 关键：宿主机虚拟环境绝不可进入镜像
+**/.venv/
+
+# (2) Python 缓存与测试产物
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/.pytest_cache/
+**/.pytest_tmp/
+**/.ruff_cache/
+**/.mypy_cache/
+
+# (3) 前端依赖与构建产物（镜像内会重新 npm install + vite build）
+**/node_modules/
+**/dist/
+**/.vite/
+
+# (4) Playwright 产物
+**/playwright-report/
+**/test-results/
+
+# (5) VCS / 编辑器 / 系统
+.git/
+**/.DS_Store

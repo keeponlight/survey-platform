@@ -1,0 +1,31 @@
+{
+  "round": 2,
+  "run_id": "dab5823b-5101-40eb-aa99-bd4cc44b4162",
+  "note": "paused_by_api_unavailable_after_429_burst",
+  "final_status": "paused",
+  "pause_reason": "api_unavailable",
+  "sample_size": 50,
+  "succeeded": 44,
+  "failed": 5,
+  "retry_wait": 1,
+  "total_attempts": 65,
+  "error_code_counts": {
+    "SERVER_ERROR": 5,
+    "TIMEOUT": 1,
+    "RATE_LIMITED": 15
+  },
+  "http_duration_ms_success": {
+    "min": 3753,
+    "p50": 12468,
+    "p90": 36485,
+    "p95": 57770,
+    "p99": 80267,
+    "max": 80267,
+    "mean": 17850
+  },
+  "members_by_attempts_used": {
+    "1": 40,
+    "2": 5,
+    "3": 5
+  }
+}

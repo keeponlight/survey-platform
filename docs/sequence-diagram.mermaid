@@ -1,0 +1,106 @@
+%% 万级智能体模拟问卷平台 · 关键调用时序（Mermaid sequenceDiagram）
+%% 覆盖：① 批次创建(幂等) ② 领取→发请求(不持事务)→CAS保存 ③ 暂停/恢复/取消 ④ 崩溃恢复 ⑤ 报表/导出
+
+sequenceDiagram
+    autonumber
+    actor User
+    participant API as FastAPI(api/routes)
+    participant RS as RunService
+    participant Repo as RunRepository
+    participant DB as PostgreSQL
+    participant W as WorkerScheduler
+    participant Prov as ProviderAdapter(Mock/真实)
+    participant Rpt as ReportService/Export
+
+    %% ===== ① 批次创建（同一事务 + 幂等）=====
+    Note over User,DB: ① POST /runs（必须 Idempotency-Key）
+    User->>API: POST /runs {survey_id, import_id, model, budget, request_limit}
+    API->>RS: create(RunCreate, idempotency_key)
+    RS->>DB: SELECT run WHERE idempotency_key=:k FOR UPDATE
+    alt 同 key 且 request_hash 不同
+        RS-->>User: 409
+    else 同 key 且 hash 相同
+        RS-->>User: 200 返回原 run（幂等）
+    else 无记录
+        RS->>DB: BEGIN
+        RS->>DB: INSERT runs(ready, survey_snapshot, model_snapshot, request_limit)
+        RS->>DB: INSERT run_members x N（分块，同一事务）
+        RS->>DB: COMMIT（失败全回滚 → 禁止半批执行）
+        RS-->>User: 201 {run_id}
+    end
+
+    %% ===== 启动 =====
+    User->>API: POST /runs/{id}/start
+    API->>RS: start(id)
+    RS->>DB: 检查无其它活动批次（running/pausing/paused/cancelling）
+    alt 存在活动批次
+        RS-->>User: 409
+    else 可启动
+        RS->>DB: UPDATE runs SET status='running', started_at=now()
+        RS-->>User: 202
+    end
+
+    %% ===== ② 领取→发请求→CAS保存 =====
+    Note over W,DB: Worker 独立进程，100 槽位
+    W->>DB: pg_try_advisory_lock(:app_lock)（第二个 worker 失败退出）
+    loop 有空闲槽位 且 run=running
+        W->>Repo: claim_members(run_id, free_slots)
+        Repo->>DB: BEGIN
+        Repo->>DB: SELECT runs ... FOR UPDATE（锁 run 行，查预算/额度/状态）
+        Repo->>DB: SELECT run_members WHERE status IN(pending,retry_wait) AND due ORDER BY row_no FOR UPDATE SKIP LOCKED LIMIT free_slots
+        Repo->>DB: 生成 lease_token/attempt_no, lease_expires_at=now()+120s
+        Repo->>DB: INSERT attempts(status='running')
+        Repo->>DB: UPDATE run_members SET status='running', lease_token...
+        Repo->>DB: COMMIT  %% 不持有事务等待模型
+        W->>Prov: await answer(ModelRequest)  %% 事务外网络等待
+        Prov-->>W: ModelResponse(raw_text, usage, request_id)
+        W->>W: AnswerValidator.validate(raw_text)
+        alt 校验通过
+            W->>Repo: save_success(member_id, lease_token, answer, attempt)
+            Repo->>DB: BEGIN
+            Repo->>DB: UPDATE run_members SET succeeded, answer_json=... WHERE id=:m AND status='running' AND lease_token=:t  %% CAS
+            Repo->>DB: UPDATE attempts SET succeeded, usage, actual_cost WHERE id=:a AND actual_cost IS NULL
+            Repo->>DB: 结算 run 成本（actual/reserved）
+            Repo->>DB: COMMIT
+        else 无效输出/超时/可重试
+            W->>Repo: mark_retry_or_failed(...)
+            Repo->>DB: 同 CAS 条件；attempt_count<limit → retry_wait(next_attempt_at=backoff)，否则 failed
+        end
+    end
+    Note over W,Prov: 每 20s 续租；每 10s 扫过期租约
+
+    %% ===== ③ 暂停/恢复/取消 =====
+    Note over User,DB: ③ 控制（PATCH 幂等）
+    User->>API: POST /runs/{id}/pause
+    API->>RS: pause(id)
+    RS->>DB: 锁 run 行；running -> pausing；追加 control_events_json
+    RS-->>User: 202（pausing）
+    Note over W: 不再领取新任务；在途请求继续保存
+    W->>DB: 在途全部返回/超时/租约收敛
+    RS->>DB: pausing -> paused（保留 pending/retry_wait）
+    User->>API: POST /runs/{id}/resume
+    RS->>DB: paused -> running（同一快照，只跑剩余）
+    User->>API: POST /runs/{id}/cancel
+    RS->>DB: -> cancelling；未开始成员 -> cancelled；在途仍可保存成功
+    RS->>DB: 收敛 -> cancelled（用户取消优先）
+
+    %% ===== ④ 崩溃恢复 =====
+    Note over W,DB: ④ 崩溃恢复
+    W->>DB: 扫描 lease_expires_at < now() 的 running
+    DB-->>W: 过期成员
+    W->>DB: 标记 attempt abandoned（结果未知）→ retry_wait 或 failed
+    W->>Repo: 仅重新领取未完成任务（已成功答案不动）
+    Note over DB: 每成员仅一个有效答案（UNIQUE(run_id,persona_id) + CAS）
+
+    %% ===== ⑤ 报表与导出 =====
+    Note over User,Rpt: ⑤ GET /runs/{id}/summary 与 /export.csv
+    User->>API: GET /runs/{id}/summary
+    API->>Rpt: summary(id)
+    Rpt->>DB: BEGIN（一致性读事务）
+    Rpt->>DB: 五档计数 / top2box / mean_score / coverage / 分组
+    Rpt->>DB: COMMIT
+    Rpt-->>User: {sample_size, valid_count, coverage, report_revision, as_of, ...}
+    User->>API: GET /runs/{id}/export.csv
+    API->>Rpt: export_csv(id)
+    Rpt->>DB: 一致性快照：全部成员行（失败/待完成 value 空）
+    Rpt-->>User: 流式 CSV(UTF-8 BOM)

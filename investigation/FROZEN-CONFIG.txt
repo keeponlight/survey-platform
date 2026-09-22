@@ -1,0 +1,41 @@
+=== 冻结配置 ===
+记录时刻 UTC: 2026-09-21T04:56:53Z / 本地: 2026-09-21 12:56:53 +0800
+git: 项目未 git init，无 commit（用文件 sha256 固定版本）
+
+-- 关键代码文件 sha256 --
+f8b17ffa5aea644503a2f42fc3a71c3656109dcd449d944faa39825ae6410223  backend/app/worker/execute.py
+f86cbac6b4a266a675d767f6a8a7fd4f01f1f53cac47533c7c623adeba7edc91  backend/app/worker/main.py
+c48f335629e1fc6a70ad8fc08c0fe2a313f5c4abe4d3eebfcc68401d85d80294  backend/app/worker/limits.py
+9a3b1ef2335ca3a4bbd1ccdaab8a7d63f9f0d4342e3dba6869da9360c7242a43  backend/app/inference/provider.py
+4229c65832a14d1ffb4aa4a1d8a728c439cd123e873a32e9d773665ffb769692  backend/app/config.py
+70d9e5e2da5af2fc3d7adc217ea28844bef56e20f226e286861eefe06aab4196  backend/app/personas/source.py
+
+-- worker 容器实际生效配置（key 本体不打印） --
+AGENT_CONCURRENCY=20
+BUDGET_CURRENCY=CNY
+MODEL_API_KEY_ENV=SURVEY_MODEL_API_KEY
+MODEL_ENDPOINT=https://ooioo.work/v1
+MODEL_MAX_OUTPUT_TOKENS=2000
+MODEL_NAME=gpt-5.6-terra
+MODEL_PROVIDER=openai_compatible
+MODEL_RPM=60
+MODEL_TIMEOUT_SECONDS=120
+MODEL_TPM=400000
+
+-- retry 策略（源码常量，只读） --
+71:    backoff_seconds: tuple[float, ...] = (2.0, 8.0)
+35:DEFAULT_ATTEMPT_LIMIT = 3
+187:                    "attempt_limit": DEFAULT_ATTEMPT_LIMIT,
+
+-- 上轮 run 的 prompt_version（本轮完全复用同一 survey 快照） --
+ purchase-intent-zh-v1 |          50
+
+-- 冻结数据集（imports 表记录） --
+ 68d1ac54-3821-4640-9a2f-581abc6d930f |        50
+
+a1c8a23305c62b296a82eccffac9b07b37b1b6afa6e6a70f4e57521b93e1c13e  /Users/zhao/Desktop/User_360_Analysis_sample50.csv
+
+-- 成员级 attempt_limit --
+             3
+             6
+
